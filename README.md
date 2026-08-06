@@ -8,7 +8,7 @@
 
 ## 功能与边界
 
-- 只需要 `DEEPSEEK_API_KEY`；不依赖 Tavily、Brave、Serper 等第三方搜索 key。
+- 需要 `DEEPSEEK_API_KEY`。
 - 提供一个 MCP 工具：`web_search({ "query": string })`。
 - 通过 `https://api.deepseek.com/anthropic/v1/messages` 调用 `web_search_20250305` server-side tool。
 - 默认模型是已验证可用的 `deepseek-v4-flash`，可用 `DEEPSEEK_MODEL` 覆盖。
@@ -151,16 +151,6 @@ cargo test --locked --test live_deepseek -- --ignored --nocapture
 ```
 
 该测试只输出总结字节数和公开 source 数量，不输出 key、完整正文或任何加密字段。
-
-## 探针验证结果（2026-08-06）
-
-对 `deepseek-v4-flash` 的最小非流式请求验证到：
-
-- 基础 Messages 请求返回 `200`、`stop_reason: "end_turn"`，并带 text block。
-- `web_search_20250305` 返回 `200`、最终 text 总结，过程中可出现 `thinking`、`server_tool_use` 与 `web_search_tool_result` blocks。
-- `web_search_tool_result.content[]` 可含公开 `title`、`url`、`page_age`，也可含不可读取的 `encrypted_content`；本项目只提取前者。
-- 个别搜索结果块可带 `error_code`，但最终仍可获得总结；本项目跳过这些失败项。
-- `max_uses: 1` 被接受，但一次请求中仍观察到多个 `server_tool_use`，故未作为请求字段或严格限制。
 
 ## 贡献与安全
 
