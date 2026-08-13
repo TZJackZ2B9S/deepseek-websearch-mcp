@@ -16,7 +16,7 @@ name = "deepseek-websearch-mcp"
 path = "src/main.rs"
 
 [dependencies]
-rmcp = { version = "=3.1.1", default-features = false, features = ["server", "macros", "transport-io"] }
+rmcp = { version = "=3.1.2", default-features = false, features = ["server", "macros", "transport-io"] }
 tokio = { version = "1", features = ["macros", "rt-multi-thread", "time"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
